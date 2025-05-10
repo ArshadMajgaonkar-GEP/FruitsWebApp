@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
@@ -7,8 +8,14 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class FruitBasketController : ControllerBase
     {
-
         static List<string> fruitBasket = new List<string> { "Apple", "Banana", "Cherry" };
+
+        private readonly IGuidService _guidService;
+
+        public FruitBasketController(IGuidService guidService)
+        {
+            _guidService = guidService;
+        }
 
         [HttpGet("GetFruits")]
         public IActionResult GetFruitBasket()
@@ -28,6 +35,12 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest("Fruit name cannot be empty.");
             }
+        }
+
+        [HttpGet("GetGUID")]
+        public ActionResult<string> getGUID()
+        {
+            return _guidService.GetSpecialGuidFromWeb();
         }
     }
 }
